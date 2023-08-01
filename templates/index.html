@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English sign language convertor</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+  
+   <div class="container"><h3> English to Indian Sign Language Conversion</h3> </div>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="Text"><b>Text</b></label>
+            <input type="text" name="text" placeholder="Enter the text">
+        
+            <button type="submit" class"submitbtn">Submit</button>
+        </div> 
+    </form>
+
+    <div id="player"></div>
+    <script src="//www.youtube.com/iframe_api"></script>
+    
+    <script>
+        /**
+         * Put your video IDs in this array
+         */
+        {% comment %} var videoIDs = [
+            'gxFroPz8ydI',
+            'rOcFkQzLhLQ',
+            'KVIEAqtUyxE',
+            'oLG6MTeNo2k'
+     ];   {% endcomment %}
+
+        {% comment %} console.log("urls: ",{{urls}}) {% endcomment %}
+        var videoIDs = JSON.parse('{{ urls|safe }}'); 
+        console.log("Index VideoIDs: ", videoIDs)
+
+        var player, currentVideoId = 0;
+    
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '350',
+                width: '425',
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        console.log("Reached function onPlayerReady")
+    
+        function onPlayerReady(event) {
+            console.log("Currently at: ",videoIDs[currentVideoId]);
+            event.target.loadVideoById(videoIDs[currentVideoId]);
+        }
+    
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.ENDED) {
+                currentVideoId++;
+                if (currentVideoId < videoIDs.length) {
+                    player.loadVideoById(videoIDs[currentVideoId]);
+                }
+            }
+        }
+    </script>
+
+    <div class="txt">
+        The text you entered is <b> {{text}} </b> 
+    </div> 
+    <div class="txt">
+        The ISL text is <b> {{variable}} </b>
+    </div>     
+</body>
+</html>

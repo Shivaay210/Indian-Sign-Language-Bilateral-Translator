@@ -1,0 +1,14 @@
+.video{
+    width: 500px;
+    height: 281px;
+}
+.container{
+    margin: auto;
+    text-align: center;
+    background-color: aquamarine;
+}
+.txt{
+    margin: auto;
+    color: rgb(252, 212, 171);
+    font-size: 13px;
+}
